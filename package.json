@@ -1,0 +1,19 @@
+{
+  "name": "neon-poc",
+  "version": "0.1.0",
+  "description": "PoC of Neon to have Rust modules inside a Node.js app",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yagoff/NeonPoC.git"
+  },
+  "author": "yagoff <yferrofigueira@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "neon-cli": "^0.1.18"
+  },
+  "scripts": {
+    "install": "neon build",
+    "start": "node -e 'require(\"./\")'"
+  }
+}
