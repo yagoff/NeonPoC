@@ -14,14 +14,16 @@ use regex::Regex;
 fn get_words_freq(text: &str) -> HashMap<&str, i32> {
     let re = Regex::new(r"[A-zÀ-ú]+").unwrap();
     let mut count = 0;
-    re.captures_iter(text).map(|w| w.get(0).map_or("", |m| m.as_str())).fold(HashMap::new(), |mut stats, word| {
-        if stats.contains_key(&word) {
-            count = &stats[word] + 1;
-            stats.insert(word, count);
-        } else {
-            stats.insert(word, 1);
-        }
-        return stats
+    re.captures_iter(text)
+        .map(|w| w.get(0).map_or("", |m| m.as_str()))
+        .fold(HashMap::new(), |mut stats, word| {
+            if stats.contains_key(&word) {
+                count = &stats[word] + 1;
+                stats.insert(word, count);
+            } else {
+                stats.insert(word, 1);
+            }
+            return stats
     })
 }
 
@@ -38,6 +40,6 @@ fn top_word(call: Call) -> JsResult<JsString> {
     Ok(JsString::new(scope, top[0]).unwrap())
 }
 
-register_module!(m, {   
+register_module!(m, {
     m.export("top_word", top_word)
 });
