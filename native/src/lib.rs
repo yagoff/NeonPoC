@@ -4,7 +4,7 @@ extern crate regex;
 
 use neon::vm::{Call, JsResult, Lock};
 use neon::mem::Handle;
-use neon::js::{JsString};
+use neon::js::{JsInteger, JsString};
 use neon::js::binary::JsBuffer;
 
 use std::str;
@@ -40,6 +40,24 @@ fn top_word(call: Call) -> JsResult<JsString> {
     Ok(JsString::new(scope, top[0]).unwrap())
 }
 
+fn calculate_fibonacci(x: i32) -> i32 {
+    if x <= 2 {
+        return 1;
+    } else {
+        return calculate_fibonacci(x - 1) + calculate_fibonacci(x - 2);
+    }
+}
+
+fn fibonacci(call: Call) -> JsResult<JsInteger> {
+    let scope = call.scope;
+    let num: Handle<JsInteger> = try!(try!(call.arguments.require(scope, 0)).check::<JsInteger>());
+    let res = calculate_fibonacci(num.value() as i32);
+    Ok(JsInteger::new(scope, res))
+}
+
 register_module!(m, {
+    m.export("fibonacci", fibonacci);
     m.export("top_word", top_word)
 });
+
+
